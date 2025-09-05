@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./be_fastapi
+    container_name: backend_fastapi
+    ports:
+      - ${DOCKER_BE_PORT}:${BE_PORT}
+    volumes:
+      - ./be_fastapi:/app
+  frontend:
+    build: ./fe_react
+    container_name: frontend_react
+    ports:
+      - ${DOCKER_FE_PORT}:${FE_PORT}
+    volumes:
+      - ./fe_react:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: npm run dev
+  postgres:
+    image: postgres:latest
+    container_name: db_postgre_container
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - ${POSTGRES_HOST_PORT}:5432
+    volumes:
+      - db_postgre_container:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  db_postgre_container:
