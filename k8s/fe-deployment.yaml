@@ -13,8 +13,9 @@ spec:
       labels:
         app: frontend
     spec:
+      nodeName: minikube-m02
       containers:
         - name: frontend
           image: charlilyyyy/tpjazurepythonreactappfe:latest
           ports:
-            - containerPort: 5173
+            - containerPort: 80
