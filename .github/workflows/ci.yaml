@@ -1,9 +1,11 @@
-name: Build and Push Docker Image to Docker Hub (on merge to staging)
+name: Build and Push Docker Image to Docker Hub 
 
 on:
   push:
     branches:
-      - staging
+      - main
+    paths:
+      - 'fe_react/**'
 
 jobs:
   build-and-push:
