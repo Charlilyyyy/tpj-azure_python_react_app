@@ -80,7 +80,7 @@ export default function Home(){
             <CardHeader>
               <CardTitle>Login to your account</CardTitle>
               <CardDescription>
-                Enter your email below to login to your account
+                Login Credentials
               </CardDescription>
               <CardAction>
                 <Button variant="link">Sign Up</Button>
