@@ -55,26 +55,26 @@ jobs:
         run: |
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/tpjazurepythonreactappfe:${{ env.IMAGE_TAG }} ${{ secrets.DOCKERHUB_USERNAME }}/tpjazurepythonreactappfe:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/tpjazurepythonreactappfe:latest
-  update:
-    runs-on: ubuntu-latest
-    needs: build-and-push
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+  # update:
+  #   runs-on: ubuntu-latest
+  #   needs: build-and-push
+  #   steps:
+  #     - name: Checkout repo
+  #       uses: actions/checkout@v4
 
-      - name: Install yq
-        run: sudo apt-get install -y yq
+  #     - name: Install yq
+  #       run: sudo apt-get install -y yq
           
-      - name: Update Kubernetes fe with new image tag
-        run: |
-          IMAGE_VERSION=$(cat .image-version)
-          yq -y -i '.spec.template.spec.containers[0].image = "charlilyyyy/tpjazurepythonreactappfe:'"$IMAGE_VERSION"'"' k8s/fe-deployment.yaml
+  #     - name: Update Kubernetes fe with new image tag
+  #       run: |
+  #         IMAGE_VERSION=$(cat .image-version)
+  #         yq -y -i '.spec.template.spec.containers[0].image = "charlilyyyy/tpjazurepythonreactappfe:'"$IMAGE_VERSION"'"' k8s/fe-deployment.yaml
 
-      - name: Commit, pull and push changes
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git pull
-          git add k8s/fe-deployment.yaml
-          git commit -m "Update FE image to version ${{ env.IMAGE_TAG }}" || echo "No changes"
-          git push origin main
+  #     - name: Commit, pull and push changes
+  #       run: |
+  #         git config user.name "github-actions"
+  #         git config user.email "github-actions@github.com"
+  #         git pull
+  #         git add k8s/fe-deployment.yaml
+  #         git commit -m "Update FE image to version ${{ env.IMAGE_TAG }}" || echo "No changes"
+  #         git push origin main
