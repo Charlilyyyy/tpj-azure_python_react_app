@@ -66,7 +66,7 @@ jobs:
 
      - name: Run update script
        run: |
-         bash scripts/updateK8sManifests.sh vote ${{ env.IMAGE_REPOSITORY }} ${{ env.IMAGE_TAG }}
+         bash scripts/updateK8sManifests.sh fe_react ${{ env.IMAGE_REPOSITORY }} ${{ env.IMAGE_TAG }}
 
      # - name: Run update script
      #   run: |
