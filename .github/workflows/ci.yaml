@@ -64,9 +64,11 @@ jobs:
           
       - name: Update Kubernetes fe with new image tag
         run: |
-          IMAGE_TAG=${{ needs.build-and-push.outputs.IMAGE_TAG || env.IMAGE_TAG }}
+          IMAGE_TAG=${{ env.IMAGE_TAG }}
           echo "Updating image to version $IMAGE_TAG"
-          sed -i "s|image: charlilyyyy/tpjazurepythonreactappfe.*|image: charlilyyyy/tpjazurepythonreactappfe:${IMAGE_TAG}|g" k8s/fe-deployment.yaml
+          sed -i "s|^ *image:.*|          image: charlilyyyy/tpjazurepythonreactappfe:${IMAGE_TAG}|g" k8s/fe-deployment.yaml
+          echo "--- Updated YAML ---"
+          cat k8s/fe-deployment.yaml
 
       - name: Commit, pull and push changes
         run: |
