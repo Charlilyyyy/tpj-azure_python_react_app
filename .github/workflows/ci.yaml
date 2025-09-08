@@ -61,14 +61,14 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Install yq
+        run: sudo apt-get install -y yq
           
       - name: Update Kubernetes fe with new image tag
         run: |
-          IMAGE_TAG=${{ env.IMAGE_TAG }}
-          echo "Updating image to version $IMAGE_TAG"
-          sed -i "s|^ *image:.*|          image: charlilyyyy/tpjazurepythonreactappfe:${IMAGE_TAG}|g" k8s/fe-deployment.yaml
-          echo "--- Updated YAML ---"
-          cat k8s/fe-deployment.yaml
+          IMAGE_VERSION=$(cat .image-version)
+          yq -i ".spec.template.spec.containers[0].image = \"charlilyyyy/tpjazurepythonreactappfe:${IMAGE_VERSION}\"" k8s/deployment.yaml
 
       - name: Commit, pull and push changes
         run: |
