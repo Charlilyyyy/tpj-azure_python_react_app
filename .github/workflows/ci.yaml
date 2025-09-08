@@ -22,8 +22,27 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Set Docker Image Tag
-        run: echo "IMAGE_TAG=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+      - name: Set up version file
+        run: |
+          if [ ! -f .image-version ]; then
+            echo 1 > .image-version
+          fi
+          VERSION=$(cat .image-version)
+          echo "IMAGE_TAG=$VERSION" >> $GITHUB_ENV
+
+      - name: Increment version
+        run: |
+          VERSION=$(( $IMAGE_TAG + 1 ))
+          echo $VERSION > .image-version
+          echo "NEXT_IMAGE_TAG=$VERSION" >> $GITHUB_ENV
+
+      - name: Commit updated version file
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add .image-version
+          git commit -m "chore: bump image version to ${{ env.NEXT_IMAGE_TAG }}" || echo "No changes to commit"
+          git push origin main
 
       - name: Build Docker image
         run: |
@@ -36,3 +55,4 @@ jobs:
         run: |
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/tpjazurepythonreactappfe:${{ env.IMAGE_TAG }} ${{ secrets.DOCKERHUB_USERNAME }}/tpjazurepythonreactappfe:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/tpjazurepythonreactappfe:latest
+  # update:
