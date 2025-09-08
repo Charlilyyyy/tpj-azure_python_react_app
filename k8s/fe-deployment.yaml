@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: charlilyyyy/tpjazurepythonreactappfe:
+          image: charlilyyyy/tpjazurepythonreactappfe:latest
           ports:
             - containerPort: 80
