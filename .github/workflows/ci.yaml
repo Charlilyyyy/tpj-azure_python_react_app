@@ -8,7 +8,7 @@ on:
       - 'fe_react/**'
 
 permissions:
-  contents: write
+  contents: write   # allow workflow to push commits
 
 jobs:
   build-and-push:
@@ -25,19 +25,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Set up version file
+      - name: Bump image version
         run: |
           if [ ! -f .image-version ]; then
-            echo 1 > .image-version
+            echo 0 > .image-version
           fi
           VERSION=$(cat .image-version)
-          echo "IMAGE_TAG=$VERSION" >> $GITHUB_ENV
-
-      - name: Increment version
-        run: |
-          VERSION=$(( $IMAGE_TAG + 1 ))
-          echo $VERSION > .image-version
-          echo "NEXT_IMAGE_TAG=$VERSION" >> $GITHUB_ENV
+          NEW_VERSION=$((VERSION + 1))
+          echo $NEW_VERSION > .image-version
+          echo "IMAGE_TAG=$NEW_VERSION" >> $GITHUB_ENV
 
       - name: Commit updated version file
         run: |
@@ -50,6 +46,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/tpjazurepythonreactappfe:${{ env.IMAGE_TAG }} -f fe_react/Dockerfile fe_react
+
       - name: Push Docker image
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/tpjazurepythonreactappfe:${{ env.IMAGE_TAG }}
@@ -58,4 +55,3 @@ jobs:
         run: |
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/tpjazurepythonreactappfe:${{ env.IMAGE_TAG }} ${{ secrets.DOCKERHUB_USERNAME }}/tpjazurepythonreactappfe:latest
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/tpjazurepythonreactappfe:latest
-  # update:
