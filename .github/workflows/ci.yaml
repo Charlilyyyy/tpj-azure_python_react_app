@@ -65,7 +65,9 @@ jobs:
        - name: Set image env vars
          run: |
            VERSION=$(cat .image-version)
-           echo "IMAGE_TAG=$VERSION" >> $GITHUB_ENV
+           NEW_VERSION=$((VERSION + 1))
+           echo $NEW_VERSION > .image-version
+           echo "IMAGE_TAG=$NEW_VERSION" >> $GITHUB_ENV
 
        - name: Update fe-deployment image tag
          run: |
