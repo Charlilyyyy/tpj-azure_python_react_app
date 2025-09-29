@@ -74,10 +74,7 @@ jobs:
 
        - name: Update fe-deployment image tag with Helm
          run: |
-           helm upgrade --install frontend ./frontend-chart \
-             --namespace frontend \
-             --set image.repository=charlilyyyy/tpjazurepythonreactappfe \
-             --set image.tag=${{ env.IMAGE_TAG }}
+           sed -i "s|tag:.*|tag: \"${{ env.IMAGE_TAG }}\"|g" frontend-chart/values.yaml
 
 
        - name: Commit, pull and push changes
