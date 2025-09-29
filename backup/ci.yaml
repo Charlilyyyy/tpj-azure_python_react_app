@@ -68,17 +68,9 @@ jobs:
            NEW_VERSION=$((VERSION + 1))
            echo "IMAGE_TAG=$NEW_VERSION" >> $GITHUB_ENV
 
-      #  - name: Update fe-deployment image tag
-      #    run: |
-      #      sed -i "s|image:.*|image: charlilyyyy/tpjazurepythonreactappfe:${{ env.IMAGE_TAG }}|g" k8s/fe-deployment.yaml
-
-       - name: Update fe-deployment image tag with Helm
+       - name: Update fe-deployment image tag
          run: |
-           helm upgrade --install frontend ./frontend-chart \
-             --namespace frontend \
-             --set image.repository=charlilyyyy/tpjazurepythonreactappfe \
-             --set image.tag=${{ env.IMAGE_TAG }}
-
+           sed -i "s|image:.*|image: charlilyyyy/tpjazurepythonreactappfe:${{ env.IMAGE_TAG }}|g" k8s/fe-deployment.yaml
 
        - name: Commit, pull and push changes
          run: |

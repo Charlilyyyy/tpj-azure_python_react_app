@@ -1,0 +1,6 @@
+namespace: frontend
+replicaCount: 1
+image:
+  repository: charlilyyyy/tpjazurepythonreactappfe
+  tag: "12"
+containerPort: 80
