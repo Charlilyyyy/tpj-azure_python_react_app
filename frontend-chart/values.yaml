@@ -2,7 +2,7 @@ namespace: frontend
 replicaCount: 1
 image:
   repository: charlilyyyy/tpjazurepythonreactappfe
-  tag: "12"
+  tag: "19"
 containerPort: 80
 ingress:
   enabled: true
