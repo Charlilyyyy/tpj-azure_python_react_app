@@ -78,7 +78,7 @@ export default function Home(){
         <form onSubmit={handleSubmit} className="flex justify-center space-y-6 w-full">
           <Card className="w-full max-w-2xl">
             <CardHeader>
-              <CardTitle>Login to your account 2</CardTitle>
+              <CardTitle>Login to your account 3</CardTitle>
               <CardDescription>
                 Login Credentials Here Below
               </CardDescription>
